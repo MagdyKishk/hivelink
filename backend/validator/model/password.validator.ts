@@ -7,6 +7,6 @@ const password = {
     password:
       "Invalid Data: Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character. It also supports international characters.",
   },
-};
+} as const;
 
 export default password;

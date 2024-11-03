@@ -12,6 +12,6 @@ const dream = {
     content:
       "Invalid Data: Content must be at least 20 characters and 50000 maximum. It can include letters, numbers, punctuation, and spaces.",
   },
-};
+} as const;
 
 export default dream;

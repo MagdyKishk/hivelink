@@ -6,6 +6,6 @@ const email = {
     address:
       "Invalid Data: Email must follow the standard format (e.g., user@example.com), allowing international characters. No spaces are allowed.",
   },
-};
+} as const;
 
 export default email;

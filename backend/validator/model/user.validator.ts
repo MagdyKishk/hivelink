@@ -12,6 +12,6 @@ const user = {
     userName:
       "Invalid Data: Username must follow the format 'User-xxxxxxxx' where 'xxxxxxxx' is an 8-character hexadecimal string (0-9, a-f).",
   },
-};
+} as const;
 
 export default user;

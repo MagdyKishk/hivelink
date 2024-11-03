@@ -23,8 +23,26 @@ export const MESSAGES = {
     INTERNAL_SERVER_ERROR:
       "An unexpected error occurred on our server. Please try again later.",
   },
+  AUTH: {
+    USER_DOES_NOT_EXIST:
+      "The associated user account does not exist or has been deactivated.",
+    USER_IS_AUTHENTICATED:
+      "User is authenticated and ready to access the platform.",
+    MISSING_AUTH_HEADER:
+      "Authorization header is missing. Please provide a valid token.",
+    TOKEN: {
+      INVALID_ACCESS_TOKEN:
+        "The access token provided is invalid or has expired. Please log in again.",
+      INVALID_REFRESH_TOKEN:
+        "The refresh token provided is invalid or has expired. Please log in again.",
+    },
+  },
   SUCCESS: {
     SIGNUP:
       "Welcome to our platform! Your account has been successfully created. We're excited to have you on board.",
+    LOGIN: "Login successful! Welcome back!",
+    LOGOUT: "You have successfully logged out.",
+    PASSWORD_RESET:
+      "Your password has been reset successfully. You can now log in with your new password.",
   },
 } as const;

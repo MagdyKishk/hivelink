@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
-import validator from "../../validator";
 import { HTTP_STATUS } from "../../constants/httpStatus";
 import { MESSAGES } from "../../constants/messages";
-import Logger from "../../util/logger";
 import { enviromentConfig } from "../../config";
 import { Email, JwtToken, Password, User } from "../../models";
+import Logger from "../../util/logger";
 
 interface SignupRequest extends Request {
   body: {
@@ -17,6 +16,10 @@ interface SignupRequest extends Request {
 
 export default async (req: SignupRequest, res: Response) => {
   const { firstName, lastName, email, password } = req.body;
+
+  Logger.debug(
+    `Signup Requested: { firstName: ${firstName}, lastName: ${lastName}, email: ${email}, password: [hidden]}`
+  );
 
   // Validate data
   if (!firstName || !lastName || !email || !password) {
@@ -114,6 +117,7 @@ export default async (req: SignupRequest, res: Response) => {
       signed: true,
     });
 
+    Logger.debug(`Signup request fullfiled: {userId: ${newUser._id}, username: ${newUser.username}}`)
     // Return final response
     res.status(HTTP_STATUS.CREATED).json({
       success: true,
@@ -137,7 +141,7 @@ export default async (req: SignupRequest, res: Response) => {
       },
     });
   } catch (error) {
-    console.log(error);
+    Logger.error(error);
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: MESSAGES.GENERAL.INTERNAL_SERVER_ERROR,
