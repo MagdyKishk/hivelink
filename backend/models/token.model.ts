@@ -7,7 +7,7 @@ import type { JwtTokenDocument, JwtTokenModel } from "./types/token.model";
 const jwtTokenSchema = new mongoose.Schema<JwtTokenDocument>(
   {
     value: { type: String, required: true },
-    expiresData: { type: Date, required: true },
+    expiresDate: { type: Date, required: true },
   },
   {
     statics: {
@@ -19,13 +19,13 @@ const jwtTokenSchema = new mongoose.Schema<JwtTokenDocument>(
             expiresIn: jwtConfig.JWT_ACCESS_EXPIRES,
           }
         );
-        const expiresData =
-          Date.now() +
-          (getDateFromPeriodString(jwtConfig.JWT_ACCESS_EXPIRES) || 0);
+        const expiresData = new Date(
+          Date.now() + (getDateFromPeriodString(jwtConfig.JWT_ACCESS_EXPIRES) || 0)
+        );
 
         const tokenDocument = new this({
           value: token,
-          expiresData: expiresData.toString(),
+          expiresDate: expiresData,
         });
 
         await tokenDocument.save();
@@ -40,13 +40,13 @@ const jwtTokenSchema = new mongoose.Schema<JwtTokenDocument>(
             expiresIn: jwtConfig.JWT_REFRESH_EXPIRES,
           }
         );
-        const expiresData =
-          Date.now() +
-          (getDateFromPeriodString(jwtConfig.JWT_REFRESH_EXPIRES) || 0);
+        const expiresData = new Date(
+          Date.now() + (getDateFromPeriodString(jwtConfig.JWT_REFRESH_EXPIRES) || 0)
+        );
 
         const tokenDocument = new this({
           value: token,
-          expiresData: expiresData.toString(),
+          expiresDate: expiresData,
         });
 
         await tokenDocument.save();
@@ -55,6 +55,11 @@ const jwtTokenSchema = new mongoose.Schema<JwtTokenDocument>(
     },
   }
 );
+
+jwtTokenSchema.index({ expiresDate: 1 }, { 
+  background: true,
+  expireAfterSeconds: 0 
+});
 
 export const JwtToken = mongoose.model<JwtTokenDocument, JwtTokenModel>(
   "JwtToken",

@@ -95,13 +95,13 @@ const userSchema = new mongoose.Schema<UserDocument, UserModel>(
         username?: string
       ) {
         if (firstName) {
-          this.firstName == firstName;
+          this.firstName = firstName;
         }
         if (lastName) {
-          this.lastName == lastName;
+          this.lastName = lastName;
         }
         if (username) {
-          this.username == username;
+          this.username = username;
         }
 
         if (firstName || lastName || username) {

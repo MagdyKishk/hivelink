@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { jwtConfig } from "../../config";
+import { enviromentConfig, jwtConfig } from "../../config";
 import { HTTP_STATUS } from "../../constants/httpStatus";
 import { MESSAGES } from "../../constants/messages";
 import { JwtToken, User } from "../../models";
@@ -25,7 +25,7 @@ export default async (req: CheckAuthRequest, res: Response) => {
     // Get target token
     const targetToken = await JwtToken.findOne({
       value: token,
-      expiresData: { $gt: Date.now() },
+      expiresDate: { $gt: new Date() },
     });
 
     if (!targetToken) {
@@ -78,10 +78,11 @@ export default async (req: CheckAuthRequest, res: Response) => {
       },
     });
   } catch (error) {
-    Logger.error(`Error checking auth: ${error}`);
+    Logger.error(error);
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: MESSAGES.GENERAL.INTERNAL_SERVER_ERROR,
+      error: enviromentConfig.NODE_ENV === "development" ? error : undefined,
     });
   }
 };

@@ -5,6 +5,7 @@ const AuthRouter = express.Router();
 
 AuthRouter.post('/signup', AuthController.signup)
 AuthRouter.post('/login',  AuthController.login)
-AuthRouter.post('/check',  AuthController.check)
+AuthRouter.post('/refresh', AuthController.refresh)
+AuthRouter.get('/check', AuthController.check)
 
 export default AuthRouter

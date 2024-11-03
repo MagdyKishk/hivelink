@@ -5,11 +5,11 @@ interface EmailDocument extends Document {
   createdAt: Date;
   updatedAt: Date;
   userId: mongoose.Schema.Types.ObjectId;
-  address: String;
-  verified: Boolean;
-  verifyCode?: String;
+  address: string;
+  verified: boolean;
+  verifyCode?: string;
   verifyCodeExpireDate?: Date;
-  DeletionDate?: Date;
+  deletionDate?: Date;
   generateNewToken: () => void | Promise<void>;
 }
 

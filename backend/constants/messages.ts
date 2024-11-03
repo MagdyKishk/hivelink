@@ -44,6 +44,7 @@ export const MESSAGES = {
       "Welcome to our platform! Your account has been successfully created. We're excited to have you on board.",
     LOGIN: "Login successful! Welcome back!",
     LOGOUT: "You have successfully logged out.",
+    REFRESHED_ACCESS_TOKEN: "New access token have been generated",
     PASSWORD_RESET:
       "Your password has been reset successfully. You can now log in with your new password.",
   },

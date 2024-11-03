@@ -26,7 +26,7 @@ const emailSchema = new mongoose.Schema<EmailDocument, EmailModel>(
       type: Date,
       default: () => Date.now() + 1000 * 60 * 60 * 24,
     },
-    DeletionDate: {
+    deletionDate: {
       type: Date,
       default: undefined
     },

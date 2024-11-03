@@ -3,7 +3,7 @@ import mongoose, { Document } from "mongoose";
 interface JwtTokenDocument extends Document {
   _id: mongoose.Schema.Types.ObjectId;
   value: string;
-  expiresData: Date;
+  expiresDate: Date;
 }
 
 interface JwtTokenModel extends mongoose.Model<JwtTokenDocument> {

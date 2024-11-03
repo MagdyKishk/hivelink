@@ -5,6 +5,7 @@ import { MESSAGES } from "../../constants/messages";
 import { Email, JwtToken, Password, User } from "../../models";
 import validator from "../../validator";
 import { enviromentConfig } from "../../config";
+import { setRefreshTokenCookie } from "../../util/cookies/tokenCookie";
 
 interface LoginRequest extends Request {
   body: {
@@ -69,7 +70,6 @@ export default async (req: LoginRequest, res: Response) => {
       targetUser.passwords.current
     );
 
-    
     if (!targetPassword) {
       res.status(HTTP_STATUS.UNAUTHORIZED).json({
         success: false,
@@ -77,7 +77,7 @@ export default async (req: LoginRequest, res: Response) => {
       });
       return;
     }
-    
+
     const isValidPassword = await targetPassword.compare(password);
     if (!isValidPassword) {
       res.status(HTTP_STATUS.UNAUTHORIZED).json({
@@ -99,35 +99,25 @@ export default async (req: LoginRequest, res: Response) => {
     // Saving newUser and newEmail
     await targetUser.save();
 
-    // Store tokens in cookies
-    res.cookie("accessToken", newAccessToken.value, {
-      httpOnly: true,
-      secure: enviromentConfig.NODE_ENV === "production",
-      maxAge: +newAccessToken.expiresData,
-      signed: true,
-    });
+    // Store only refresh token in HTTP-only cookie
+    setRefreshTokenCookie(res, newRefreshToken);
 
-    res.cookie("refreshToken", newRefreshToken.value, {
-      httpOnly: true,
-      secure: enviromentConfig.NODE_ENV === "production",
-      maxAge: +newRefreshToken.expiresData,
-      signed: true,
-    });
-
+    // Send access token in response body
     res.status(HTTP_STATUS.OK).json({
-      success: true, // Should be true on success
-      message: MESSAGES.AUTH.USER_IS_AUTHENTICATED,
+      success: true,
+      message: MESSAGES.SUCCESS.LOGIN,
       data: {
+        accessToken: newAccessToken.value,
         user: {
           firstName: targetUser.firstName,
           lastName: targetUser.lastName,
           username: targetUser.username,
           tokens: {
             access: {
-              expiresDate: newAccessToken.expiresData,
+              expiresDate: newAccessToken.expiresDate,
             },
             refresh: {
-              expiresDate: newRefreshToken.expiresData,
+              expiresDate: newRefreshToken.expiresDate,
             },
           },
           createdAt: targetUser.createdAt,

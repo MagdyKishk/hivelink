@@ -24,7 +24,7 @@ const dreamSchema = new mongoose.Schema<DreamDocument>({
       type: [mongoose.Schema.Types.ObjectId],
       ref: "User",
     },
-    dilikes: {
+    dislikes: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "User",
     },

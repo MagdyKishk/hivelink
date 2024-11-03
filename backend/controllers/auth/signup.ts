@@ -4,6 +4,7 @@ import { MESSAGES } from "../../constants/messages";
 import { enviromentConfig } from "../../config";
 import { Email, JwtToken, Password, User } from "../../models";
 import Logger from "../../util/logger";
+import { setRefreshTokenCookie } from "../../util/cookies/tokenCookie";
 
 interface SignupRequest extends Request {
   body: {
@@ -103,36 +104,27 @@ export default async (req: SignupRequest, res: Response) => {
     await Promise.all([newEmail.save(), newUser.save()]);
 
     // Store tokens in cookies
-    res.cookie("accessToken", newAccessToken.value, {
-      httpOnly: true,
-      secure: enviromentConfig.NODE_ENV === "production",
-      maxAge: +newAccessToken.expiresData,
-      signed: true,
-    });
+    setRefreshTokenCookie(res, newRefreshToken);
 
-    res.cookie("refreshToken", newRefreshToken.value, {
-      httpOnly: true,
-      secure: enviromentConfig.NODE_ENV === "production",
-      maxAge: +newRefreshToken.expiresData,
-      signed: true,
-    });
-
-    Logger.debug(`Signup request fullfiled: {userId: ${newUser._id}, username: ${newUser.username}}`)
+    Logger.debug(
+      `Signup request fullfiled: {userId: ${newUser._id}, username: ${newUser.username}}`
+    );
     // Return final response
     res.status(HTTP_STATUS.CREATED).json({
       success: true,
       message: MESSAGES.SUCCESS.SIGNUP,
       data: {
+        accessToken: newAccessToken.value,
         user: {
           firstName: newUser.firstName,
           lastName: newUser.lastName,
           username: newUser.username,
           tokens: {
             access: {
-              expiresDate: newAccessToken.expiresData,
+              expiresDate: newAccessToken.expiresDate,
             },
             refresh: {
-              expiresDate: newRefreshToken.expiresData,
+              expiresDate: newRefreshToken.expiresDate,
             },
           },
           createdAt: newUser.createdAt,
