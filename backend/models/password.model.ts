@@ -24,7 +24,7 @@ const passwordSchema = new mongoose.Schema<PasswordDocument, PasswordModel>(
 
     methods: {
       async compare(password: string) {
-        await bcryptjs.compare(password, this.hash as string);
+        return await bcryptjs.compare(password, this.hash as string);
       },
     },
   }

@@ -30,6 +30,8 @@ export const MESSAGES = {
       "User is authenticated and ready to access the platform.",
     MISSING_AUTH_HEADER:
       "Authorization header is missing. Please provide a valid token.",
+    INVALID_CREDS:
+      "Invalid email or password",
     TOKEN: {
       INVALID_ACCESS_TOKEN:
         "The access token provided is invalid or has expired. Please log in again.",

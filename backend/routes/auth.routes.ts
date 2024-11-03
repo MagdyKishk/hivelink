@@ -4,6 +4,7 @@ import AuthController from "../controllers/auth";
 const AuthRouter = express.Router();
 
 AuthRouter.post('/signup', AuthController.signup)
-AuthRouter.post('/check', AuthController.check)
+AuthRouter.post('/login',  AuthController.login)
+AuthRouter.post('/check',  AuthController.check)
 
 export default AuthRouter
