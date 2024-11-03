@@ -17,7 +17,7 @@ export default async (req: Request, res: Response) => {
     // Clear cookies
     clearRefreshTokenCookie(res);
 
-    return res.status(HTTP_STATUS.OK).json({
+    res.status(HTTP_STATUS.OK).json({
       success: true,
       message: MESSAGES.SUCCESS.LOGOUT,
     });
