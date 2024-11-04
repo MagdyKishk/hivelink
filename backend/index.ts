@@ -15,6 +15,7 @@ import { cookieConfig, enviromentConfig } from "./config";
 // Database
 import db from "./database";
 import { requestLogger } from "./middleware/requestLogger";
+import DreamRouter from "./routes/dream.routes";
 
 // Jobs
 
@@ -35,6 +36,7 @@ db.connect();
 
 // Routes
 app.use("/api/auth", AuthRouter);
+app.use("/api/dream", DreamRouter)
 
 // Jobs
 

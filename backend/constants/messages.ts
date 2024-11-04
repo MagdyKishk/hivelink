@@ -14,6 +14,7 @@ export const MESSAGES = {
     },
     PASSWORD: validator.password.error.password,
     DREAM: {
+      AUTHOR: "Invalid User Id",
       TITLE: validator.dream.error.title,
       DESCRIPTION: validator.dream.error.description,
       CONTENT: validator.dream.error.content,
@@ -40,6 +41,7 @@ export const MESSAGES = {
     },
   },
   SUCCESS: {
+    DREAM_CREATED: "Dream created successfully",
     SIGNUP:
       "Welcome to our platform! Your account has been successfully created. We're excited to have you on board.",
     LOGIN: "Login successful! Welcome back!",

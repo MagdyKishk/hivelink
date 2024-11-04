@@ -109,6 +109,7 @@ export default async (req: LoginRequest, res: Response) => {
       data: {
         accessToken: newAccessToken.value,
         user: {
+          _id: targetUser._id,
           firstName: targetUser.firstName,
           lastName: targetUser.lastName,
           username: targetUser.username,

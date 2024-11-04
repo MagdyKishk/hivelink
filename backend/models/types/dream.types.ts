@@ -1,6 +1,7 @@
 import mongoose, { Document } from "mongoose";
 
 interface DreamDocument extends Document {
+  _id: mongoose.Schema.Types.ObjectId;
   author: mongoose.Schema.Types.ObjectId;
   title: string;
   description: string;
@@ -12,6 +13,11 @@ interface DreamDocument extends Document {
   };
 }
 
-interface DreamModel extends mongoose.Model<DreamDocument> {}
+interface DreamModel extends mongoose.Model<DreamDocument> {
+  validateAuthor: (author: string) => boolean;
+  validateTitle: (title: string) => boolean;
+  validateDescription: (description: string) => boolean;
+  validateContent: (content: string) => boolean;
+}
 
 export { DreamDocument, DreamModel };

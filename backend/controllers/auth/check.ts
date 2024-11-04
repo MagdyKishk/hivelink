@@ -6,44 +6,38 @@ import { MESSAGES } from "../../constants/messages";
 import { JwtToken, User } from "../../models";
 import Logger from "../../util/logger";
 
-interface CheckAuthRequest extends Request {}
+interface CheckAuthRequest extends Request {
+  body: {
+    accessToken?: string;
+  }
+}
 
 export default async (req: CheckAuthRequest, res: Response) => {
   Logger.debug("Request Checking Auth");
-  const authHeader = req.headers["authorization"];
+  const { accessToken } = req.body;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+  if (!accessToken) {
     res.status(HTTP_STATUS.UNAUTHORIZED).json({
       success: false,
-      message: MESSAGES.AUTH.MISSING_AUTH_HEADER,
+      message: MESSAGES.AUTH.TOKEN.INVALID_ACCESS_TOKEN,
     });
     return;
   }
 
-  const token = authHeader.split(" ")[1];
   try {
-    // Get target token
+    // Verify the token first
+    const decodedAccessToken = jwt.verify(
+      accessToken,
+      jwtConfig.JWT_ACCESS_SECRET
+    ) as JwtPayload;
+
+    // Get target token from database and verify it exists and is not expired
     const targetToken = await JwtToken.findOne({
-      value: token,
+      value: accessToken,
       expiresDate: { $gt: new Date() },
     });
 
     if (!targetToken) {
-      res.status(HTTP_STATUS.UNAUTHORIZED).json({
-        success: false,
-        message: MESSAGES.AUTH.TOKEN.INVALID_ACCESS_TOKEN,
-      });
-      return;
-    }
-
-    // Verify the token instead of just decoding it
-    const decodedAccessToken = jwt.verify(
-      token,
-      jwtConfig.JWT_ACCESS_SECRET
-    ) as JwtPayload;
-
-    // Check if the decoded token exists
-    if (!decodedAccessToken) {
       res.status(HTTP_STATUS.UNAUTHORIZED).json({
         success: false,
         message: MESSAGES.AUTH.TOKEN.INVALID_ACCESS_TOKEN,
@@ -57,18 +51,17 @@ export default async (req: CheckAuthRequest, res: Response) => {
     if (!targetUser) {
       res.status(HTTP_STATUS.UNAUTHORIZED).json({
         success: false,
-        message:
-          MESSAGES.AUTH.USER_DOES_NOT_EXIST ||
-          "The associated user account does not exist or has been deactivated.",
+        message: MESSAGES.AUTH.USER_DOES_NOT_EXIST,
       });
       return;
     }
 
     res.status(HTTP_STATUS.OK).json({
-      success: true, // Should be true on success
+      success: true,
       message: MESSAGES.AUTH.USER_IS_AUTHENTICATED,
       data: {
         user: {
+          _id: targetUser._id,
           firstName: targetUser.firstName,
           lastName: targetUser.lastName,
           username: targetUser.username,
@@ -79,6 +72,15 @@ export default async (req: CheckAuthRequest, res: Response) => {
     });
   } catch (error) {
     Logger.error(error);
+    // If token verification fails, return unauthorized
+    if (error instanceof jwt.JsonWebTokenError) {
+      res.status(HTTP_STATUS.UNAUTHORIZED).json({
+        success: false,
+        message: MESSAGES.AUTH.TOKEN.INVALID_ACCESS_TOKEN,
+      });
+      return;
+    }
+    // For other errors, return internal server error
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: MESSAGES.GENERAL.INTERNAL_SERVER_ERROR,
