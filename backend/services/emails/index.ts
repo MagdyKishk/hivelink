@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { emailServiceConfig } from "../../config";
 import pug from "pug";
 import path from "path";
+import Logger from "../../util/logger";
 
 dotenv.config();
 
@@ -27,8 +28,9 @@ async function sendVerificationCode(
 
   try {
     await sgMail.send(msg);
+    Logger.debug(`A email with the verification code has been send to ${to}`)
   } catch (error) {
-    console.error("Error sending verification email:", error);
+    Logger.debug(`Error happened while trying to send verification code to ${to} :${error}`)
     throw error;
   }
 }

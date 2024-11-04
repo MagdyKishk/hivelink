@@ -62,7 +62,10 @@ export default async (req: Request, res: Response) => {
       success: true,
       message: MESSAGES.SUCCESS.AUTH.TOKEN_REFRESH,
       data: {
-        accessToken: newAccessToken.value,
+        accessToken: {
+          value: newAccessToken.value,
+          expiresDate: newAccessToken.expiresDate,
+        },
       },
     });
   } catch (error) {

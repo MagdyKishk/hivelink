@@ -10,7 +10,7 @@ import mongoose from "mongoose";
 interface RemoveEmailRequest extends AuthedRequest {
   body: {
     emailId?: string;
-  }
+  };
 }
 
 export default async (req: RemoveEmailRequest, res: Response) => {
@@ -21,11 +21,11 @@ export default async (req: RemoveEmailRequest, res: Response) => {
     res.status(HTTP_STATUS.BAD_REQUEST).json({
       success: false,
       message: MESSAGES.ERROR.VALIDATION.EMAIL.INVALID_ID,
-    })
-    return
+    });
+    return;
   }
 
-  if (!currentUser.emails.some(id => id.toString() == emailId)) {
+  if (!currentUser.emails.some((id) => id.toString() == emailId)) {
     res.status(HTTP_STATUS.UNAUTHORIZED).json({
       success: false,
       message: MESSAGES.ERROR.AUTH.EMAIL.VERIFICATION.NOT_OWNED,
@@ -44,13 +44,14 @@ export default async (req: RemoveEmailRequest, res: Response) => {
     }
 
     // Remove email from user's emails array
-    currentUser.emails = currentUser.emails.filter(id => id.toString() !== emailId);
-    await currentUser.save();
+    currentUser.emails = currentUser.emails.filter(
+      (id) => id.toString() !== emailId
+    );
 
-    // Delete the email document
-    await Email.findByIdAndDelete(emailId);
+    // Delete the email document and save user
+    await Promise.all([currentUser.save(), Email.findByIdAndDelete(emailId)]);
 
-    res.status(HTTP_STATUS.OK).json({
+    res.status(HTTP_STATUS.NO_CONTENT).json({
       success: true,
       message: MESSAGES.SUCCESS.AUTH.EMAIL.REMOVED,
     });
@@ -62,4 +63,4 @@ export default async (req: RemoveEmailRequest, res: Response) => {
       error: enviromentConfig.NODE_ENV === "development" ? error : undefined,
     });
   }
-}
+};
