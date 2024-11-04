@@ -12,4 +12,17 @@ DreamRouter.post(
   DreamController.create
 );
 
+DreamRouter.post(
+  "/like",
+  //@ts-expect-error
+  checkAuth,
+  DreamController.reaction.like
+);
+DreamRouter.post(
+  "/dislike",
+  //@ts-expect-error
+  checkAuth,
+  DreamController.reaction.dislike
+);
+
 export default DreamRouter;

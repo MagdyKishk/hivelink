@@ -1,3 +1,9 @@
-logs
 node_modules
 .env
+
+# Ignore Compiled Files
+/backend/**/*.html
+
+# Ignore Logs files
+logs
+/**/*.log

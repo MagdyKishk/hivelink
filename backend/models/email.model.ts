@@ -20,11 +20,11 @@ const emailSchema = new mongoose.Schema<EmailDocument, EmailModel>(
     },
     verifyCode: {
       type: String,
-      default: () => generateRandomToken(),
+      default: () => generateRandomToken(6),
     },
     verifyCodeExpireDate: {
       type: Date,
-      default: () => Date.now() + 1000 * 60 * 60 * 24,
+      default: () => Date.now() + 1000 * 60 * 30,
     },
     deletionDate: {
       type: Date,
@@ -41,10 +41,10 @@ const emailSchema = new mongoose.Schema<EmailDocument, EmailModel>(
     methods: {
       async generateNewToken() {
         if (!this.verified) {
-          const newToken = generateRandomToken();
+          const newToken = generateRandomToken(6);
           this.verifyCode = newToken;
           this.verifyCodeExpireDate = new Date(
-            Date.now() + 1000 * 60 * 60 * 24
+            Date.now() + 1000 * 60 * 30
           );
           await this.save();
         }

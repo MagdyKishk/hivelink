@@ -68,13 +68,13 @@ const userSchema = new mongoose.Schema<UserDocument, UserModel>(
           ref: "Dream",
         },
       ],
+      comments: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Comment",
+        },
+      ],
     },
-    comments: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Comment",
-      },
-    ],
   },
   {
     timestamps: true,

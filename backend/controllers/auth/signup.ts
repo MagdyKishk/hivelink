@@ -5,6 +5,7 @@ import { enviromentConfig } from "../../config";
 import { Email, JwtToken, Password, User } from "../../models";
 import Logger from "../../util/logger";
 import { setRefreshTokenCookie } from "../../util/cookies/tokenCookie";
+import EmailService from "../../services";
 
 interface SignupRequest extends Request {
   body: {
@@ -69,12 +70,14 @@ export default async (req: SignupRequest, res: Response) => {
       return;
     }
 
-    // Create password
-    const hashedPassword = await Password.hashPassword(password);
-    const newPassword = await Password.create({ hash: hashedPassword });
+    // hash the password and create new email in paralel
+    const [hashedPassword, newEmail] = await Promise.all([
+      await Password.hashPassword(password),
+      await Email.create({ address: email }),
+    ]);
 
-    // Create new email
-    const newEmail = await Email.create({ address: email });
+    // Create password from hash
+    const newPassword = await Password.create({ hash: hashedPassword });
 
     // Create new user
     const newUser = await User.create({
@@ -109,6 +112,13 @@ export default async (req: SignupRequest, res: Response) => {
     Logger.debug(
       `Signup request fullfiled: {userId: ${newUser._id}, username: ${newUser.username}}`
     );
+
+    EmailService.sendVerificationCode(
+      email,
+      `${firstName} ${lastName}`,
+      newEmail.verifyCode!
+    );
+
     // Return final response
     res.status(HTTP_STATUS.CREATED).json({
       success: true,

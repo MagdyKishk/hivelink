@@ -4,4 +4,16 @@ import jwtConfig from "./jsonwebtoken";
 import cookieConfig from "./cookie";
 import jobsConfig from "./jobs";
 
-export { enviromentConfig, databaseConfig, jwtConfig, cookieConfig, jobsConfig };
+// Services
+import { emailServiceConfig } from "./services";
+
+export {
+  enviromentConfig,
+  databaseConfig,
+  jwtConfig,
+  cookieConfig,
+  jobsConfig,
+
+  // Services
+  emailServiceConfig,
+};

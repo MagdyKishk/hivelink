@@ -24,6 +24,12 @@ export const MESSAGES = {
     INTERNAL_SERVER_ERROR:
       "An unexpected error occurred on our server. Please try again later.",
   },
+  REACTION: {
+    INVALID_COMMENT_ID: "Invalid Comment Id",
+    INVALID_DREAM_ID: "Invalid Dream Id",
+    ALREADY_LIKED: "User already liked this resourse",
+    ALREADY_DISLIKED: "User already disliked this resourse",
+  },
   AUTH: {
     USER_DOES_NOT_EXIST:
       "The associated user account does not exist or has been deactivated.",
@@ -31,8 +37,7 @@ export const MESSAGES = {
       "User is authenticated and ready to access the platform.",
     MISSING_AUTH_HEADER:
       "Authorization header is missing. Please provide a valid token.",
-    INVALID_CREDS:
-      "Invalid email or password",
+    INVALID_CREDS: "Invalid email or password",
     TOKEN: {
       INVALID_ACCESS_TOKEN:
         "The access token provided is invalid or has expired. Please log in again.",
@@ -41,7 +46,6 @@ export const MESSAGES = {
     },
   },
   SUCCESS: {
-    DREAM_CREATED: "Dream created successfully",
     SIGNUP:
       "Welcome to our platform! Your account has been successfully created. We're excited to have you on board.",
     LOGIN: "Login successful! Welcome back!",
@@ -49,5 +53,8 @@ export const MESSAGES = {
     REFRESHED_ACCESS_TOKEN: "New access token have been generated",
     PASSWORD_RESET:
       "Your password has been reset successfully. You can now log in with your new password.",
+    DREAM_CREATED: "Dream created successfully",
+    RESOURCE_LIKED: "Resource liked successfully",
+    RESOURCE_DISLIKED: "Resource disliked successfully",
   },
 } as const;
