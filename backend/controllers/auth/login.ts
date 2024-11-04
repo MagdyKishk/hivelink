@@ -21,7 +21,7 @@ export default async (req: LoginRequest, res: Response) => {
   if (!email || !password) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({
       success: false,
-      message: MESSAGES.VALIDATION.REQUIRED_FIELDS,
+      message: MESSAGES.ERROR.VALIDATION.REQUIRED_FIELDS,
     });
     return;
   }
@@ -29,7 +29,7 @@ export default async (req: LoginRequest, res: Response) => {
   if (!Email.validateAddress(email)) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({
       success: false,
-      message: MESSAGES.VALIDATION.EMAIL,
+      message: MESSAGES.ERROR.VALIDATION.EMAIL.FORMAT,
     });
     return;
   }
@@ -49,7 +49,7 @@ export default async (req: LoginRequest, res: Response) => {
     if (!targetEmail) {
       res.status(HTTP_STATUS.UNAUTHORIZED).json({
         success: false,
-        message: MESSAGES.AUTH.INVALID_CREDS,
+        message: MESSAGES.ERROR.AUTH.CREDENTIALS.INVALID,
       });
       return;
     }
@@ -60,7 +60,7 @@ export default async (req: LoginRequest, res: Response) => {
     if (!targetUser) {
       res.status(HTTP_STATUS.UNAUTHORIZED).json({
         success: false,
-        message: MESSAGES.AUTH.USER_DOES_NOT_EXIST,
+        message: MESSAGES.ERROR.AUTH.USER.NOT_FOUND,
       });
       return;
     }
@@ -73,7 +73,7 @@ export default async (req: LoginRequest, res: Response) => {
     if (!targetPassword) {
       res.status(HTTP_STATUS.UNAUTHORIZED).json({
         success: false,
-        message: MESSAGES.AUTH.USER_DOES_NOT_EXIST,
+        message: MESSAGES.ERROR.AUTH.USER.NOT_FOUND,
       });
       return;
     }
@@ -82,7 +82,7 @@ export default async (req: LoginRequest, res: Response) => {
     if (!isValidPassword) {
       res.status(HTTP_STATUS.UNAUTHORIZED).json({
         success: false,
-        message: MESSAGES.AUTH.INVALID_CREDS,
+        message: MESSAGES.ERROR.AUTH.CREDENTIALS.INVALID,
       });
       return;
     }
@@ -105,7 +105,7 @@ export default async (req: LoginRequest, res: Response) => {
     // Send access token in response body
     res.status(HTTP_STATUS.OK).json({
       success: true,
-      message: MESSAGES.SUCCESS.LOGIN,
+      message: MESSAGES.SUCCESS.AUTH.LOGIN,
       data: {
         accessToken: newAccessToken.value,
         user: {
@@ -130,7 +130,7 @@ export default async (req: LoginRequest, res: Response) => {
     Logger.error(error);
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: MESSAGES.GENERAL.INTERNAL_SERVER_ERROR,
+      message: MESSAGES.ERROR.SYSTEM.INTERNAL_ERROR,
       error: enviromentConfig.NODE_ENV === "development" ? error : undefined,
     });
   }

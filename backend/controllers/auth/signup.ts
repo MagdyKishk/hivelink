@@ -27,35 +27,35 @@ export default async (req: SignupRequest, res: Response) => {
   if (!firstName || !lastName || !email || !password) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({
       success: false,
-      message: MESSAGES.VALIDATION.REQUIRED_FIELDS,
+      message: MESSAGES.ERROR.VALIDATION.REQUIRED_FIELDS,
     });
     return;
   }
   if (!User.validateFirstName(firstName)) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({
       success: false,
-      message: MESSAGES.VALIDATION.USER.FIRSTNAME,
+      message: MESSAGES.ERROR.VALIDATION.USER.FIRST_NAME,
     });
     return;
   }
   if (!User.validateLastName(lastName)) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({
       success: false,
-      message: MESSAGES.VALIDATION.USER.LASTNAME,
+      message: MESSAGES.ERROR.VALIDATION.USER.LAST_NAME,
     });
     return;
   }
   if (!Email.validateAddress(email)) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({
       success: false,
-      message: MESSAGES.VALIDATION.EMAIL.ADDRESS,
+      message: MESSAGES.ERROR.VALIDATION.EMAIL.FORMAT,
     });
     return;
   }
   if (!Password.validatePassword(password)) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({
       success: false,
-      message: MESSAGES.VALIDATION.PASSWORD,
+      message: MESSAGES.ERROR.VALIDATION.PASSWORD,
     });
     return;
   }
@@ -65,7 +65,7 @@ export default async (req: SignupRequest, res: Response) => {
     if (await Email.exists({ address: email })) {
       res.status(HTTP_STATUS.BAD_REQUEST).json({
         success: false,
-        message: MESSAGES.VALIDATION.EMAIL.EXISTS,
+        message: MESSAGES.ERROR.AUTH.USER.ALREADY_EXISTS,
       });
       return;
     }
@@ -122,7 +122,7 @@ export default async (req: SignupRequest, res: Response) => {
     // Return final response
     res.status(HTTP_STATUS.CREATED).json({
       success: true,
-      message: MESSAGES.SUCCESS.SIGNUP,
+      message: MESSAGES.SUCCESS.AUTH.SIGNUP,
       data: {
         accessToken: newAccessToken.value,
         user: {
@@ -147,7 +147,7 @@ export default async (req: SignupRequest, res: Response) => {
     Logger.error(error);
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: MESSAGES.GENERAL.INTERNAL_SERVER_ERROR,
+      message: MESSAGES.ERROR.SYSTEM.INTERNAL_ERROR,
       error: enviromentConfig.NODE_ENV === "development" ? error : undefined,
     });
   }

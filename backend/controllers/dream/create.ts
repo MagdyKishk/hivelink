@@ -26,7 +26,7 @@ export default async (req: CreateDreamRequest, res: Response) => {
   if (!author || !title || !description || !content) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({
       success: false,
-      message: MESSAGES.VALIDATION.REQUIRED_FIELDS,
+      message: MESSAGES.ERROR.VALIDATION.REQUIRED_FIELDS,
     });
     return;
   }
@@ -34,28 +34,28 @@ export default async (req: CreateDreamRequest, res: Response) => {
   if (!(Dream.validateAuthor(author) && author == currentUser._id.toString())) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({
       success: false,
-      message: MESSAGES.VALIDATION.DREAM.AUTHOR,
+      message: MESSAGES.ERROR.VALIDATION.DREAM.INVALID_AUTHOR,
     });
     return;
   }
   if (!Dream.validateTitle(title)) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({
       success: false,
-      message: MESSAGES.VALIDATION.DREAM.TITLE,
+      message: MESSAGES.ERROR.VALIDATION.DREAM.TITLE,
     });
     return;
   }
   if (!Dream.validateDescription(description)) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({
       success: false,
-      message: MESSAGES.VALIDATION.DREAM.DESCRIPTION,
+      message: MESSAGES.ERROR.VALIDATION.DREAM.DESCRIPTION,
     });
     return;
   }
   if (!Dream.validateContent(content)) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({
       success: false,
-      message: MESSAGES.VALIDATION.DREAM.CONTENT,
+      message: MESSAGES.ERROR.VALIDATION.DREAM.CONTENT,
     });
     return;
   }
@@ -76,7 +76,7 @@ export default async (req: CreateDreamRequest, res: Response) => {
 
     res.status(HTTP_STATUS.CREATED).json({
       success: true,
-      message: MESSAGES.SUCCESS.DREAM_CREATED,
+      message: MESSAGES.SUCCESS.CONTENT.DREAM.CREATE,
       data: {
         dream: newDream,
       },
@@ -85,7 +85,7 @@ export default async (req: CreateDreamRequest, res: Response) => {
     Logger.error(error);
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: MESSAGES.GENERAL.INTERNAL_SERVER_ERROR,
+      message: MESSAGES.ERROR.SYSTEM.INTERNAL_ERROR,
       error: enviromentConfig.NODE_ENV === "development" ? error : undefined,
     });
   }

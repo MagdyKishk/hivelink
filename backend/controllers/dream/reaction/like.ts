@@ -20,7 +20,7 @@ export default async (req: LikeDreamRequest, res: Response) => {
   if (!(dreamId && mongoose.Types.ObjectId.isValid(dreamId))) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({
       success: false,
-      message: MESSAGES.REACTION.INVALID_DREAM_ID,
+      message: MESSAGES.ERROR.CONTENT.NOT_FOUND.DREAM,
     });
     return;
   }
@@ -32,7 +32,7 @@ export default async (req: LikeDreamRequest, res: Response) => {
     if (!targetDream) {
       res.status(HTTP_STATUS.BAD_REQUEST).json({
         success: false,
-        message: MESSAGES.REACTION.INVALID_DREAM_ID,
+        message: MESSAGES.ERROR.CONTENT.NOT_FOUND.DREAM,
       });
       return;
     }
@@ -41,7 +41,7 @@ export default async (req: LikeDreamRequest, res: Response) => {
     if (targetDream.reactions.likes.includes(currentUser._id)) {
       res.status(HTTP_STATUS.BAD_REQUEST).json({
         success: false,
-        message: MESSAGES.REACTION.ALREADY_LIKED,
+        message: MESSAGES.ERROR.CONTENT.REACTION.ALREADY_LIKED,
       });
       return;
     }
@@ -63,7 +63,7 @@ export default async (req: LikeDreamRequest, res: Response) => {
 
     res.status(HTTP_STATUS.OK).json({
       success: true,
-      message: MESSAGES.SUCCESS.RESOURCE_LIKED,
+      message: MESSAGES.SUCCESS.CONTENT.REACTION.LIKE,
       data: {
         userId: currentUser._id,
         dreamId: targetDream._id,
@@ -73,7 +73,7 @@ export default async (req: LikeDreamRequest, res: Response) => {
     Logger.error(error);
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: MESSAGES.GENERAL.INTERNAL_SERVER_ERROR,
+      message: MESSAGES.ERROR.SYSTEM.INTERNAL_ERROR,
       error: enviromentConfig.NODE_ENV === "development" ? error : undefined,
     });
   }

@@ -19,7 +19,7 @@ export default async (req: CheckAuthRequest, res: Response) => {
   if (!accessToken) {
     res.status(HTTP_STATUS.UNAUTHORIZED).json({
       success: false,
-      message: MESSAGES.AUTH.TOKEN.INVALID_ACCESS_TOKEN,
+      message: MESSAGES.ERROR.AUTH.TOKEN.INVALID,
     });
     return;
   }
@@ -40,7 +40,7 @@ export default async (req: CheckAuthRequest, res: Response) => {
     if (!targetToken) {
       res.status(HTTP_STATUS.UNAUTHORIZED).json({
         success: false,
-        message: MESSAGES.AUTH.TOKEN.INVALID_ACCESS_TOKEN,
+        message: MESSAGES.ERROR.AUTH.TOKEN.INVALID,
       });
       return;
     }
@@ -51,14 +51,14 @@ export default async (req: CheckAuthRequest, res: Response) => {
     if (!targetUser) {
       res.status(HTTP_STATUS.UNAUTHORIZED).json({
         success: false,
-        message: MESSAGES.AUTH.USER_DOES_NOT_EXIST,
+        message: MESSAGES.ERROR.AUTH.USER.NOT_FOUND,
       });
       return;
     }
 
     res.status(HTTP_STATUS.OK).json({
       success: true,
-      message: MESSAGES.AUTH.USER_IS_AUTHENTICATED,
+      message: MESSAGES.SUCCESS.AUTH.CHECK,
       data: {
         user: {
           _id: targetUser._id,
@@ -76,14 +76,14 @@ export default async (req: CheckAuthRequest, res: Response) => {
     if (error instanceof jwt.JsonWebTokenError) {
       res.status(HTTP_STATUS.UNAUTHORIZED).json({
         success: false,
-        message: MESSAGES.AUTH.TOKEN.INVALID_ACCESS_TOKEN,
+        message: MESSAGES.ERROR.AUTH.TOKEN.INVALID,
       });
       return;
     }
     // For other errors, return internal server error
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: MESSAGES.GENERAL.INTERNAL_SERVER_ERROR,
+      message: MESSAGES.ERROR.SYSTEM.INTERNAL_ERROR,
       error: enviromentConfig.NODE_ENV === "development" ? error : undefined,
     });
   }

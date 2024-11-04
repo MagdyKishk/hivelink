@@ -18,7 +18,7 @@ async function sendVerificationCode(
   const msg = {
     to,
     from: emailServiceConfig.SENDER_EMAIL,
-    subject: "Email Verification - Dream Journal",
+    subject: "LucidRealm Email Verification Code",
     html: pug.renderFile(templatePath, {
       username,
       verificationCode,

@@ -16,12 +16,12 @@ export default async (req: AuthedRequest, res: Response) => {
       const token = await JwtToken.findOne({ value: refreshToken });
       if (token) {
         await JwtToken.deleteOne({ _id: token._id });
-        
+
         // Remove token reference from user
         await User.findByIdAndUpdate(userId, {
           $pull: {
-            'tokens.refresh': token._id
-          }
+            "tokens.refresh": token._id,
+          },
         });
       }
     }
@@ -31,13 +31,13 @@ export default async (req: AuthedRequest, res: Response) => {
 
     res.status(HTTP_STATUS.OK).json({
       success: true,
-      message: MESSAGES.SUCCESS.LOGOUT,
+      message: MESSAGES.SUCCESS.AUTH.LOGOUT,
     });
   } catch (error) {
     Logger.error(error);
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: MESSAGES.GENERAL.INTERNAL_SERVER_ERROR,
+      message: MESSAGES.ERROR.SYSTEM.INTERNAL_ERROR,
     });
   }
 };

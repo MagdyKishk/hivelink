@@ -1,6 +1,7 @@
 const email = {
   regex: {
     address: /^[\p{L}\p{N}._%+-]+@[\p{L}\p{N}.-]+\.[\p{L}]{2,}$/u,
+    maximumEmails: 5,
   },
   error: {
     address:

@@ -13,7 +13,7 @@ export default async (req: Request, res: Response) => {
   if (!refreshToken) {
     res.status(HTTP_STATUS.UNAUTHORIZED).json({
       success: false,
-      message: MESSAGES.AUTH.TOKEN.INVALID_REFRESH_TOKEN,
+      message: MESSAGES.ERROR.AUTH.TOKEN.INVALID,
     });
     return;
   }
@@ -27,7 +27,7 @@ export default async (req: Request, res: Response) => {
     if (!targetJwtRefreshToken) {
       res.status(HTTP_STATUS.UNAUTHORIZED).json({
         success: false,
-        message: MESSAGES.AUTH.TOKEN.INVALID_REFRESH_TOKEN,
+        message: MESSAGES.ERROR.AUTH.TOKEN.INVALID,
       });
       return;
     }
@@ -60,7 +60,7 @@ export default async (req: Request, res: Response) => {
     // Send new access token in response
     res.status(HTTP_STATUS.OK).json({
       success: true,
-      message: MESSAGES.SUCCESS.REFRESHED_ACCESS_TOKEN,
+      message: MESSAGES.SUCCESS.AUTH.TOKEN_REFRESH,
       data: {
         accessToken: newAccessToken.value,
       },
@@ -69,7 +69,7 @@ export default async (req: Request, res: Response) => {
     Logger.error(error);
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: MESSAGES.GENERAL.INTERNAL_SERVER_ERROR,
+      message: MESSAGES.ERROR.SYSTEM.INTERNAL_ERROR,
       error: enviromentConfig.NODE_ENV === "development" ? error : undefined,
     });
   }

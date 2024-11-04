@@ -22,7 +22,7 @@ export default async (
   if (!accessToken) {
     res.status(HTTP_STATUS.UNAUTHORIZED).json({
       success: false,
-      message: MESSAGES.AUTH.TOKEN.INVALID_ACCESS_TOKEN,
+      message: MESSAGES.ERROR.AUTH.TOKEN.INVALID,
     });
     return;
   }
@@ -36,7 +36,7 @@ export default async (
     if (!decodedAccessToken) {
       res.status(HTTP_STATUS.UNAUTHORIZED).json({
         success: false,
-        message: MESSAGES.AUTH.TOKEN.INVALID_ACCESS_TOKEN,
+        message: MESSAGES.ERROR.AUTH.TOKEN.INVALID,
       });
       return;
     }
@@ -47,7 +47,7 @@ export default async (
     if (!targetUser) {
       res.status(HTTP_STATUS.UNAUTHORIZED).json({
         success: false,
-        message: MESSAGES.AUTH.USER_DOES_NOT_EXIST,
+        message: MESSAGES.ERROR.AUTH.USER.NOT_FOUND,
       });
       return;
     }
@@ -58,7 +58,7 @@ export default async (
     Logger.error(error);
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: MESSAGES.GENERAL.INTERNAL_SERVER_ERROR,
+      message: MESSAGES.ERROR.SYSTEM.INTERNAL_ERROR,
       error: enviromentConfig.NODE_ENV === "development" ? error : undefined,
     });
   }
