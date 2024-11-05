@@ -9,7 +9,7 @@ import Logger from "../../util/logger";
 interface CheckAuthRequest extends Request {
   body: {
     accessToken?: string;
-  }
+  };
 }
 
 export default async (req: CheckAuthRequest, res: Response) => {

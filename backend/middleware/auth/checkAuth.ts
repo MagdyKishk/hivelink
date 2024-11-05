@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { HTTP_STATUS } from "../../constants/httpStatus";
 import { MESSAGES } from "../../constants/messages";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt, { JwtPayload, TokenExpiredError } from "jsonwebtoken";
 import { enviromentConfig, jwtConfig } from "../../config";
 import { User, UserDocument } from "../../models";
 import Logger from "../../util/logger";
@@ -32,7 +32,7 @@ export default async (
       accessToken,
       jwtConfig.JWT_ACCESS_SECRET
     ) as JwtPayload;
-  
+
     if (!decodedAccessToken) {
       res.status(HTTP_STATUS.UNAUTHORIZED).json({
         success: false,
@@ -40,7 +40,7 @@ export default async (
       });
       return;
     }
-  
+
     // Get target user
     const targetUser = await User.findById(decodedAccessToken.userId);
 
@@ -55,6 +55,15 @@ export default async (
     req.user = targetUser;
     next();
   } catch (error) {
+    if (error instanceof TokenExpiredError) {
+      Logger.debug(error);
+      res.status(HTTP_STATUS.UNAUTHORIZED).json({
+        success: false,
+        message: MESSAGES.ERROR.AUTH.TOKEN.INVALID,
+        error: enviromentConfig.NODE_ENV === "development" ? error : undefined,
+      });
+      return;
+    }
     Logger.error(error);
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,

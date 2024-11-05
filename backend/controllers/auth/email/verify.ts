@@ -62,7 +62,6 @@ export default async (req: VerifyEmailRequest, res: Response) => {
     // update the data
     targetEmail.verified = true;
     targetEmail.verifyCodeExpireDate = undefined;
-    targetEmail.verifyCode = undefined;
 
     // Save target email
     await targetEmail.save();

@@ -1,4 +1,7 @@
 import create from "./create";
 import reaction from "./reaction";
-const DreamController = { create, reaction };
+import edit from "./edit";
+
+const DreamController = { create, reaction, edit };
+
 export default DreamController;

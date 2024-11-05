@@ -4,7 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 
 // Routes
-import { AuthRouter } from "./routes"
+import { AuthRouter } from "./routes";
 
 // Winston Logger
 import Logger from "./util/logger";
@@ -17,8 +17,6 @@ import db from "./database";
 import { requestLogger } from "./middleware/requestLogger";
 import DreamRouter from "./routes/dream.routes";
 
-// Jobs
-
 // Load enviroment variables into process.env
 dotenv.config();
 
@@ -27,7 +25,12 @@ const app = express();
 
 // Global Middlewares
 app.use(express.json()); // loads json bodies in req.body
-app.use(cors()); // allow multi origin requests from specified origins
+app.use(
+  cors({
+    origin: "localhost",
+    credentials: true,
+  })
+); // allow multi origin requests from specified origins
 app.use(cookieParser(cookieConfig.COOKIES_SECRET)); // loads cookies in req.cookies
 app.use(requestLogger); // logs all requests
 
@@ -36,9 +39,7 @@ db.connect();
 
 // Routes
 app.use("/api/auth", AuthRouter);
-app.use("/api/dream", DreamRouter)
-
-// Jobs
+app.use("/api/dream", DreamRouter);
 
 // Listen on specified port
 app.listen(enviromentConfig.PORT, () => {

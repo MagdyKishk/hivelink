@@ -1,19 +1,19 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import Logger from "../../util/logger";
 import { HTTP_STATUS } from "../../constants/httpStatus";
 import { MESSAGES } from "../../constants/messages";
 import { Dream } from "../../models/dream.model";
 import { enviromentConfig } from "../../config";
-import { User, UserDocument } from "../../models";
+import { User } from "../../models";
+import { AuthedRequest } from "../../middleware/auth/checkAuth";
 
-interface CreateDreamRequest extends Request {
+interface CreateDreamRequest extends AuthedRequest {
   body: {
     author?: string;
     title?: string;
     description?: string;
     content?: string;
   };
-  user: UserDocument;
 }
 
 export default async (req: CreateDreamRequest, res: Response) => {

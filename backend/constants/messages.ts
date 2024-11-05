@@ -9,9 +9,11 @@ export const MESSAGES = {
       CHECK: "Authentication verified successfully.",
       TOKEN_REFRESH: "Authentication token has been refreshed successfully.",
       EMAIL_VERIFICATION: "Email address has been successfully verified.",
-      PASSWORD_RESET: "Password has been reset successfully. Please log in with your new password.",
+      PASSWORD_RESET:
+        "Password has been reset successfully. Please log in with your new password.",
       EMAIL: {
-        REMOVED: "Email address has been successfully removed from your account.",
+        REMOVED:
+          "Email address has been successfully removed from your account.",
       },
     },
     CONTENT: {
@@ -33,10 +35,15 @@ export const MESSAGES = {
         INVALID: "Invalid email or password. Please try again.",
         MISSING: "Please provide both email and password.",
       },
+      DREAM: {
+        NOT_OWNER: "You don't have permission to edit this resourse",
+      },
       TOKEN: {
         MISSING: "Authentication token is required. Please log in.",
-        INVALID: "Invalid or expired authentication token. Please log in again.",
-        REFRESH_FAILED: "Unable to refresh authentication token. Please log in again.",
+        INVALID:
+          "Invalid or expired authentication token. Please log in again.",
+        REFRESH_FAILED:
+          "Unable to refresh authentication token. Please log in again.",
       },
       USER: {
         NOT_FOUND: "User account not found or has been deactivated.",
@@ -45,12 +52,14 @@ export const MESSAGES = {
       EMAIL: {
         VERIFICATION: {
           INVALID_CODE: "Invalid verification code provided.",
-          EXPIRED_CODE: "Verification code has expired. Please request a new one.",
+          EXPIRED_CODE:
+            "Verification code has expired. Please request a new one.",
           ALREADY_VERIFIED: "This email has already been verified.",
           ALREADY_EXIST: "This email already exist.",
           NOT_OWNED: "This email address is not associated with your account.",
           MAXIMUM_EMAILS: "You hit your maximum emails that your user can have",
-          LAST_EMAIL: "Cannot remove your last email address. At least one email must remain.",
+          LAST_EMAIL:
+            "Cannot remove your last email address. At least one email must remain.",
         },
       },
     },
@@ -71,6 +80,7 @@ export const MESSAGES = {
         TITLE: validator.dream.error.title,
         DESCRIPTION: validator.dream.error.description,
         CONTENT: validator.dream.error.content,
+        INVALID_DREAM_ID: "Invalid dream id",
       },
     },
     CONTENT: {
