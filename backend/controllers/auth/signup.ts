@@ -124,20 +124,12 @@ export default async (req: SignupRequest, res: Response) => {
       success: true,
       message: MESSAGES.SUCCESS.AUTH.SIGNUP,
       data: {
-        accessToken: newAccessToken.value,
+        accessToken: { value: newAccessToken.value, expiresDate: newAccessToken.expiresDate },
         user: {
           _id: newUser._id,
           firstName: newUser.firstName,
           lastName: newUser.lastName,
           username: newUser.username,
-          tokens: {
-            access: {
-              expiresDate: newAccessToken.expiresDate,
-            },
-            refresh: {
-              expiresDate: newRefreshToken.expiresDate,
-            },
-          },
           createdAt: newUser.createdAt,
           updatedAt: newUser.updatedAt,
         },

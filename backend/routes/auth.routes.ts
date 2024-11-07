@@ -20,7 +20,7 @@ AuthRouter.post(
  * Check and refresh token
  */
 AuthRouter.post('/refresh', AuthController.refresh)
-AuthRouter.get('/check', AuthController.check)
+AuthRouter.post('/check', AuthController.check)
 
 /**
  * Email Management

@@ -9,7 +9,7 @@ import { Dream } from "../../models/dream.model";
 
 interface EditDreamRequest extends AuthedRequest {
   body: {
-    dreamId: string;
+    dreamId?: string;
     title?: string;
     description?: string;
     content?: string;
@@ -47,26 +47,32 @@ export default async (req: EditDreamRequest, res: Response) => {
   }
 
   // validate the sent data
-  if (!(title && Dream.validateTitle(title))) {
-    res.status(HTTP_STATUS.BAD_REQUEST).json({
-      success: false,
-      message: MESSAGES.ERROR.VALIDATION.DREAM.TITLE,
-    });
-    return;
+  if (title) {
+    if (!(title && Dream.validateTitle(title))) {
+      res.status(HTTP_STATUS.BAD_REQUEST).json({
+        success: false,
+        message: MESSAGES.ERROR.VALIDATION.DREAM.TITLE,
+      });
+      return;
+    }
   }
-  if (!(description && Dream.validateDescription(description))) {
-    res.status(HTTP_STATUS.BAD_REQUEST).json({
-      success: false,
-      message: MESSAGES.ERROR.VALIDATION.DREAM.DESCRIPTION,
-    });
-    return;
+  if (description) {
+    if (!(description && Dream.validateDescription(description))) {
+      res.status(HTTP_STATUS.BAD_REQUEST).json({
+        success: false,
+        message: MESSAGES.ERROR.VALIDATION.DREAM.DESCRIPTION,
+      });
+      return;
+    }
   }
-  if (!(content && !Dream.validateContent(content))) {
-    res.status(HTTP_STATUS.BAD_REQUEST).json({
-      success: false,
-      message: MESSAGES.ERROR.VALIDATION.DREAM.CONTENT,
-    });
-    return;
+  if (content) {
+    if (!Dream.validateContent(content)) {
+      res.status(HTTP_STATUS.BAD_REQUEST).json({
+        success: false,
+        message: MESSAGES.ERROR.VALIDATION.DREAM.CONTENT,
+      });
+      return;
+    }
   }
 
   try {
@@ -76,13 +82,13 @@ export default async (req: EditDreamRequest, res: Response) => {
     if (!targetDream) {
       res.status(HTTP_STATUS.BAD_REQUEST).json({
         success: false,
-        message: MESSAGES.ERROR.VALIDATION.DREAM.INVALID_DREAM_ID
-      })
+        message: MESSAGES.ERROR.VALIDATION.DREAM.INVALID_DREAM_ID,
+      });
       return;
     }
 
     if (title) {
-      targetDream.title = title
+      targetDream.title = title;
     }
     if (description) {
       targetDream.description = description;
@@ -91,15 +97,15 @@ export default async (req: EditDreamRequest, res: Response) => {
       targetDream.content = content;
     }
 
-    await targetDream.save()
+    await targetDream.save();
 
     res.status(HTTP_STATUS.OK).json({
       success: true,
       message: MESSAGES.SUCCESS.CONTENT.DREAM.UPDATE,
       data: {
-        dream: targetDream
-      }
-    })
+        dream: targetDream,
+      },
+    });
   } catch (error) {
     Logger.error(error);
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({

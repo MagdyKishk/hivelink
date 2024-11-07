@@ -27,7 +27,7 @@ const app = express();
 app.use(express.json()); // loads json bodies in req.body
 app.use(
   cors({
-    origin: "localhost",
+    origin: "http://localhost:5173",
     credentials: true,
   })
 ); // allow multi origin requests from specified origins

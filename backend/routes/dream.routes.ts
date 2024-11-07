@@ -11,6 +11,12 @@ DreamRouter.post(
   checkAuth,
   DreamController.create
 );
+DreamRouter.post(
+  "/edit",
+  //@ts-expect-error
+  checkAuth,
+  DreamController.edit
+);
 
 DreamRouter.post(
   "/like",

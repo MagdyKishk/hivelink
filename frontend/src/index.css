@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.test {
+    animation: forwards;
+    animation-fill-mode: forwards;
+}
+
+@keyframes slideup {
+    from {
+        display: none;
+        transform: translateY(0%);
+    }
+    to {
+        transform: translateY(100%);
+    }
+}
+@keyframes slidedown {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0%);
+        display: none;
+    }
+}

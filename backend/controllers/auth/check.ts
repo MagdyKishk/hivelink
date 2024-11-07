@@ -67,6 +67,7 @@ export default async (req: CheckAuthRequest, res: Response) => {
           username: targetUser.username,
           createdAt: targetUser.createdAt,
           updatedAt: targetUser.updatedAt,
+          dreams: targetUser.dreams,
         },
       },
     });

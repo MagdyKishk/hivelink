@@ -107,20 +107,12 @@ export default async (req: LoginRequest, res: Response) => {
       success: true,
       message: MESSAGES.SUCCESS.AUTH.LOGIN,
       data: {
-        accessToken: newAccessToken.value,
+        accessToken: { value: newAccessToken.value, expiresDate: newAccessToken.expiresDate },
         user: {
           _id: targetUser._id,
           firstName: targetUser.firstName,
           lastName: targetUser.lastName,
           username: targetUser.username,
-          tokens: {
-            access: {
-              expiresDate: newAccessToken.expiresDate,
-            },
-            refresh: {
-              expiresDate: newRefreshToken.expiresDate,
-            },
-          },
           createdAt: targetUser.createdAt,
           updatedAt: targetUser.updatedAt,
         },
